@@ -1,0 +1,318 @@
+-----------------------BINARY SEARCH TREE---------
+
+
+template<typename T>
+class BinarySearchTree {
+  
+   T data;
+  BinarySearchTree<T>* left;
+  BinarysearchTree<T>*  right;
+    BinarySearchTree (T data){
+        this->data = data;
+        right= NULL;
+        left= NULL;
+    }
+};
+
+-----------CHECK TREE IS BST OR NOT--------
+
+int minimum(BinaryTreeNode<int>* root) {
+    if(root==NULL) {
+        return INT_MAX;
+    }
+    return min(root->data, min(minimum(root->left),minimum(root->right)));
+}
+
+int maximum(BinaryTreeNode<int>* root) {
+    if(root==NULL) {
+        return INT_MIN;
+    }
+    return max(root->data, min(maximum(root->left), maximum(root->right)
+}
+
+//TIME COMPLEXITY IS O(N*H)   { WORST CASE } 
+// AVERAGE TIME COMPLEXITY = O(N*LOGN)
+
+
+bool isBst(BinaryTreeNode<int>* root) {
+    if(root == NULL) {
+        return true;
+    }
+    int leftMax = maximum(root->left);
+    int rightMin = minimum(root->right);
+    bool output = (root->data > leftMax) && (root->data <= rightMin) && isBst(root->left) && isBst(root->right);
+    return output;
+}
+
+
+-------------EFFICIENT APPROACH FOR CHECKING BST {O(n)}---------
+
+class IsBSTReturn{
+  public:
+  bool isBST;
+  int maximum;
+  int minimum;
+  
+    
+};
+
+IsBSTReturn IsBST2(BinaryTreeNode<int>* root) {
+    if(root== NULL) {
+        IsBSTReturn output;
+        output.IsBST = true;
+        output.minimum = INT_MAX:
+        output.maximum = INT_MIN;
+        return output;
+    }
+    IsBSTReturn leftOutput = isBST2(root->left);
+    IsBSTReturn rghtoutput = isBST2(root->right);
+    int minimum = min(root->data,min(leftOutput.minimum,rightOutput.minimum));
+    int maximum = max(root->data, max(leftOutput.maximum,rightOutput.maximum));
+    bool IsBSTFinal = (root->data > leftOutput.maximum) && (root->data <= rightOutput.minimum) && leftOutput.isBST && rightOutput.isBST;
+    IsBSTReturn output;
+    output.minimum = minimum;
+    output.maximum = maximum;
+    output.isBST= isBSTFinal;
+    return output;
+}
+
+ 
+ 
+ 
+------ CHECK BST 3 MORE EFFICIENT-------------
+
+
+bool isBST3(BinaryTreeNode<int>* root, int min = INT_MIN, int min = INT_MAX) {
+    if(root==NULL) {
+        return;
+    }
+    if(root->data  < min || root->data > max) {
+        return false;
+    }
+    bool isLeftOk = isBST3(root->left, min, root->data-1);
+    bool isRightOk = isBST3(root->right, root->data, max);
+    return isLeftOk && isRightOk;
+}
+
+--------CONSTRUCT BINARY TREE -------------
+
+
+BinaryTreeNode<int>* constructTree(vector<int>v, si, ei) {
+    int mid = (si+ei)/2;
+    constructTree(v, si,mid);
+    constructTree(v,mid+1,ei);
+
+}
+
+
+----------CONVERT BST TO LINKED LIST------------
+
+Node<int>* Conversion(BinaryTreeNode<int>* root) {
+    if(root==NULL) {
+        Node<int>* output;
+        ouput->head=NULL;
+        output->tail = NULL;
+        return output;
+    }
+    Node<int>* temp = root;
+    if(root->left!=NULL) {
+        Node<int>* leftN;
+        if(leftN == NULL) {
+            leftN->head=conversion(root->left);
+            leftN->tail=conversion(root->left);
+        }
+        leftN->tail = conversion(root->left);
+    }
+    if(root->right!=NULL) {
+      Node<int>* rightN;
+      if(rightN==NULL) {
+          rightN->head = conversion(root->right);
+          rightN->tail = conversion(root->left);
+      }
+      rightN->tail = conversoin(root->right);
+    }
+    Node<int>* ans = leftN->head;
+    leftN->tail = temp;
+    temp->tail = rightN->head;
+    return ans;
+}
+
+
+------------ROOT TO NODE PATH IN BINAYR TREE------------
+
+vector<int>* getRootToNodePath(BinaryTreeNode<int>* root, int data) {
+    if(root== NULL) {
+        return NULL;
+    }
+    if(root->data == data) {
+        vector<int>* output = new vector<int>();
+        output.push_back(root->data);
+        return output;
+    }
+    
+    vector<int>* leftOutput = getRootToNodePath(root->left, data);
+    if(leftOutput != NULL) {
+        leftOutput.push_back(root->data);
+        return leftOutput;
+    }
+    vector<int>*rightOutput = getRootToNodePath(root->right, data);
+    if(rightOuput!=NULL) {
+        rightOutput.push_back(root->data);
+        return rightOutput;
+    }
+    else{
+         return NULL;
+    }
+}
+
+
+int main() {
+    BinaryTreeNode<int>* root = takeiInputLevelWise();
+    vecotor<int>*output = getrootToNodePath(root, 8);
+    for(int i=0;i<output.size();i++) {
+        cout<<output.a[i]<<endl;
+    }
+    delete output;
+}
+
+
+
+
+-----------------------BINARY SEARCH TREE CLASS-----
+
+#include "BinaryTreeNode.h"
+class BST {
+  BinaryTreeNode<int>*root;
+  public:
+  BST () {
+      root=NULL;
+  }
+  ~BST() {
+      delete root;
+  }
+  private:
+  
+  BinaryTreeNode<int>* deleteData(int data, BinaryTreeNode<int>* root) {
+      if(root==NULL) {
+          return NULL;
+      }
+      if(root->data == data) {
+          if(root->left ==NULL && root->right == NULL) {
+              delete root;
+              return NULL;
+          }
+          else if(root->left!= NULL) {
+              BinaryTreeNode<int>*temp = node->right;
+              root->right= NULL;
+              delete root;
+              return temp;
+          }
+          else if (root->right!=NULL) {
+              BinaryTreeNode<int>* temp = node->left;
+              root->left==NULL;
+              delete root;
+              return temp;
+          }
+          else {
+            BinaryTreeNode<int>*min = node->right;
+            while(min->left!= NULL) {
+                min=min->left;
+            }
+            int rightmin = min->data;
+            root->data = rightmin;
+            root->right = deleteNode(rightmin, node->right);
+            return root;
+              
+          }
+      }
+      else if(root->data > data) {
+          root->left = deleteData(data , root->left);
+      }
+       else if(root->data < data) {
+          root->right = deleteData(data, root->right);
+      }
+  }
+  /*
+  int maximum(BinaryTreeNode<int> *root) {
+      if(root==NULL) {
+          return  INT_MIN;
+      }
+      return (min(root->data,min(maximum(root->left),maximum(root->right))));
+  }
+  int minimum(BinaryTreeNode<int>* root) {
+      if(root==NULL) {
+          return INT_MAX;
+      }
+      return (max(root->data), max(maximum(root->left),maximum(root->right)));
+  }*/
+  public:
+  
+  
+  BinaryTreeNode<int>* deleteData(int data) {
+      return deleteData(data, root);
+  }
+  
+  
+   
+  
+ -----------------------------------------------
+  private:
+  BinaryTreeNode<int>* insertData (int data, BinaryTreeNode<int>* root) {
+     if(root==NULL) {
+         BinaryTreeNode<int>* ans = new BinaryTreeNode<int>(data);
+         return ans;
+     }
+     if(root>data > data && root->data != NULL) {
+         root->right = insertData(data, root->right);
+     }
+     if(root->data < data && root->data!=NULL) {
+         root->left = insertData(data, root->left);
+     }
+     return root;
+  }
+  
+  public:
+    
+    BinaryTreeNode<int>* insertNode(int data) {
+        return insertData(data, root);
+    }
+    
+    
+    
+    
+  ----------------------------------------
+  private:
+  bool hasData(int data, BinaryTreeNode<int>* node) {
+      if(node== NULL) {
+          return false;
+      }
+      if(node->data --data ){
+          return true;
+      }
+      else if (root->data > data) {
+          return hasData(data, node->left);
+      }
+      else  {
+          return hasData(data, node->right);
+      }
+  }
+  
+  public:
+  bool hasData (int data) {
+      return hasData(data, root);
+  }
+---------------------------------------------------    
+};
+
+
+--------MAIN FUNCTION-----------
+ #include<iostream>
+ #include<vector>
+ using namespace std;
+ int main() {
+  BinaryTreeInput<int>*root = takeInputLevelWise();
+  cout<<isBst(root)<<endl;
+  delete root;    
+ }
+ 
+ 
